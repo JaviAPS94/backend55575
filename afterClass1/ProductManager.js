@@ -1,44 +1,30 @@
-
-class TicketManager {
-    #precioBaseGanancia = 0.15;
-    precioBasePublica = 0.10;
-
-    static variablePrueba;
-
+class ProductManager {
     constructor() {
-        this.eventos = [];
+        this.products = [];
     }
 
     getEventos = () => {
         return this.eventos;
     }
 
-    agregarEventos = (
-        nombre,
-        lugar, precio, capacidad = 50, fecha = new Date().toDateString() ) => {
-            const evento = {
-                nombre,
-                lugar,
-                precio: precio + precio * this.#precioBaseGanancia,
-                capacidad,
-                fecha,
-                participantes: []
-            }
-            // [{id: 1, evento: 'Conccierto'}, {id: 2}]
-            // Id autoincrementable 1, 2, 3, 4, 5 .......
-            // Primer Caso
-            // [{id: 1, nombre: 'Evento 1'}, {id: 2, nombre: 'Evento 2'}] Arreglo dejó de estar vacío
-            // [1,2,3,4,5] 0 1 2 3 4 longitud del arreglo tenemos 5
-            // Nuevamente un llamado a insertar un evento
-            // Siempre el último elemento de nuestro arreglo es el que tiene
-            // el último id generado
-            if (this.eventos.length === 0) {
-                evento.id = 1;
-            } else {
-                evento.id = this.eventos[this.eventos.length - 1].id + 1;
-            }
+    addProduct = (
+        title,
+        description, price, thumbnail, code, stock ) => {
+            // Validar que los campos sean obligatorios
+            // if (!title || !description .....)
+            // [
+            //     {
+            //         title: 'Pizza',
+            //         description: 'Pizza de manzana',
+            //         price: 200,
+            //         thumbnail: 'http://imagen.jpg',
+            //         code: 'PROD-001',
+            //         stock: 20
+            //     }
+            // ]
+            //Validar que no se repita el campo code
+            //esto es parecido a la lógica de agregar participante al envento
 
-            this.eventos.push(evento);
     }
 
     //Necesito saber el evento al cual quiero inscribirme // id del evento
