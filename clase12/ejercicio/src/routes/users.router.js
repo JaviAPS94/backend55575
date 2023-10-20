@@ -15,6 +15,64 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/by-filters', async (req, res) => {
+    try {
+        const { name, lastName, email } = req.query;
+        //vamos a buscar los usuarios que concidan el nombre o el apellido o el email
+        const users = await usersModel
+            .find({ $or: [
+                {first_name: name},
+                {last_name: lastName},
+                {email: email}] });
+
+        res.send({ status: 'success', payload: users });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ error: error.message });
+    }
+});
+
+router.get('/paginated', async (req, res) => {
+    try {
+        const { size = 10, page = 0 } = req.query;
+        const skip = page * size;
+        const users = await usersModel.find().skip(skip).limit(size);
+        res.send({ status: 'success', payload: users });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ error: error.message });
+    }
+});
+
+router.get('/by-email', async (req, res) => {
+    try {
+        const { email } = req.query;
+        //[a-zA-Z]
+        const users = await usersModel.find({ email: { $regex: new RegExp(email, "i") } }, { first_name: 1, email: 1, _id: 0 }).sort({ first_name: -1 });
+        res.send({ status: 'success', payload: users });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ error: error.message });
+    }
+});
+
+//Servicio para obtener los usuarios por id
+router.get('/:uid', async (req, res) => {
+    try {
+        const { uid } = req.params;
+        const user = await usersModel.findOne({ _id: uid });
+        
+        if(!user) {
+            return res.status(404).send({ status: 'error', message: 'user not found' });
+        }
+
+        res.send({ status: 'success', payload: user });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ error: error.message }); 
+    }
+});
+
 //CREATE
 router.post('/', async (req, res) => {
     const { first_name, last_name, email } = req.body;
