@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "mongoose": "^7.6.4",
+    "mongoose-paginate-v2": "^1.7.4"
+  },
+  "name": "ejercicio2",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
