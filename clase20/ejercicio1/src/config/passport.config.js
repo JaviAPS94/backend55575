@@ -14,6 +14,11 @@ const initializePassport = () => {
     }, async (req, username, password, done) => {
         try {
             const { first_name, last_name, age } = req.body;
+
+            if(!first_name || !last_name) {
+                return done(null, false);
+            }
+
             const user = await usersModel.findOne({ email: username });
             
             if(user) {
