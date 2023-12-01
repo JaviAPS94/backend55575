@@ -35,6 +35,15 @@ export default class Router {
         )
     }
 
+    put(path, policies, ...callbacks) {
+        this.router.put(
+            path,
+            this.handlePolicies(policies),
+            this.generateCustomResponse,
+            this.applyCallbacks(callbacks)
+        )
+    }
+
     generateCustomResponse = (req, res, next) => {
         res.sendSuccess = (data) => {
             res.status(200).json({ data });
