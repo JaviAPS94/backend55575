@@ -7,6 +7,7 @@ const purchase = async (req, res) => {
         
         res.send({ result });
     } catch (error) {
+        req.logger.error(error.message);
         res.status(500).send()
     }
 }
