@@ -60,7 +60,13 @@ const login = async (req, res) => {
     }
 }
 
+const test = async (req, res) => {
+    console.log("test")
+    res.sendSuccess(accessToken);
+}
+
 export {
     login,
-    register
+    register,
+    test
 }

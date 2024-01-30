@@ -54,4 +54,9 @@ router.put('/:id', async(req, res) => {
     }
 });
 
+router.get('/reset-password', (req, res) => {
+    const token = req.query.token;
+    res.render('reset-password', { token });
+});
+
 export default router;

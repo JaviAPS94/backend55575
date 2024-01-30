@@ -1,0 +1,125 @@
+paths:
+  /api/users:
+    get:
+      summary: Este servicio obtiene el listado de todos los usuarios
+      # El tag es un identificador que indica a donde (el recurso) pertenece el servicio
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Los usuarios fueron obtenidos satisfactoriamente de la BDD
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión
+  /api/users/{uid}:
+    get:
+      summary: Este servicio obtiene un solo usuario a partir de su uid (identificaro del usuario)
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El id del usuario a buscar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El usuario fue obtenido correctamente de nuestra BDD
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        "500":
+          description: Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión
+    put:
+      summary: Este servicio actualiza el usuario a partir de su uid
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El id del usuario a actualizar
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateUser'
+      responses:
+        "200":
+          description: El usuario fue actualizado correctamente
+        "404":
+          description: El usuario no fue encontrado en BDD
+        "500":
+          description:  Error interno del servidor, usualmente generado por una query defectuosa o fallo en la conexión
+components:
+  schemas:
+    User:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenrado por mongodb, es el id del usuario
+        first_name:
+          type: String
+          description: Nombre del usuario
+        last_name:
+          type: String
+          description: Apellido del usuario
+        email:
+          type: String
+          description: Correo del usuario
+        password:
+          type: String
+          description: Password del usuario
+        role:
+          type: String
+          description: Rol del usuario
+      example:
+        _id: ObjectId("jhaskd4545")
+        first_name: Coder
+        last_name: House
+        email: ch@coder.com
+        password: $%#ASD
+        role: admin
+  requestBodies:
+    updateUser:
+      type: Object
+      properties:
+        first_name:
+          type: String
+          description: Nombre del usuario
+        last_name:
+          type: String
+          description: Apellido del usuario
+        email:
+          type: String
+          description: Correo del usuario
+        password:
+          type: String
+          description: Password del usuario
+        role:
+          type: String
+          description: Rol del usuario
+      example:
+        first_name: Coder
+        last_name: House
+        email: ch@coder.com
+        password: $%#ASD
+        role: admin
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
