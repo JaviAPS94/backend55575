@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import UserDTO from '../dto/User.dto.js';
 
 const register = async (req, res) => {
+    /* #swagger.tags = ['Sessions']*/
     try {
         const { first_name, last_name, email, password } = req.body;
         if (!first_name || !last_name || !email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
@@ -25,6 +26,7 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    /* #swagger.tags = ['Sessions']*/
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
     const user = await usersService.getUserByEmail(email);
@@ -37,6 +39,7 @@ const login = async (req, res) => {
 }
 
 const current = async(req,res) =>{
+    /* #swagger.tags = ['Sessions']*/
     const cookie = req.cookies['coderCookie']
     const user = jwt.verify(cookie,'tokenSecretJWT');
     if(user)
@@ -44,6 +47,7 @@ const current = async(req,res) =>{
 }
 
 const unprotectedLogin  = async(req,res) =>{
+    /* #swagger.tags = ['Sessions']*/
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
     const user = await usersService.getUserByEmail(email);
@@ -54,6 +58,7 @@ const unprotectedLogin  = async(req,res) =>{
     res.cookie('unprotectedCookie',token,{maxAge:3600000}).send({status:"success",message:"Unprotected Logged in"})
 }
 const unprotectedCurrent = async(req,res)=>{
+    /* #swagger.tags = ['Sessions']*/
     const cookie = req.cookies['unprotectedCookie']
     const user = jwt.verify(cookie,'tokenSecretJWT');
     if(user)
